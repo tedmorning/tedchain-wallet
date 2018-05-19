@@ -1,0 +1,31 @@
+{
+  "name": "tedchain",
+  "version": "0.2.3",
+  "main": "dist/tedchain.js",
+  "ignore": [
+    "lib",
+    "tests",
+    ".gitattributes",
+    ".gitignore",
+    ".npmignore",
+    "bower.json",
+    "gruntFile.js",
+    "package.json",
+    "tedchain-js.njsproj",
+    "tedchain-js.sln",
+    "package.json"
+  ],
+  "dependencies": {
+    "bitcore-lib": "~0.13.11"
+  },
+  "homepage": "https://github.com/tedchain/tedchain-js",
+  "_release": "0.2.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.3",
+    "commit": "41ae72504a29ba3067236f489e5117a4bda8d9d6"
+  },
+  "_source": "https://github.com/tedchain/tedchain-js.git",
+  "_target": "~0.2.3",
+  "_originalSource": "tedchain"
+}

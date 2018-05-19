@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" ng-app="TedchainWallet">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.min.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/bitcore-lib/bitcore-lib.min.js"></script>
+  <script src="bower_components/bitcore-mnemonic/bitcore-mnemonic.min.js"></script>
+  <script src="bower_components/tedchain/dist/tedchain.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="bower_components/angular-tree-control/angular-tree-control.js"></script>
+  <script src="bower_components/moment/moment.js"></script>
+
+  <script src="js/main.js"></script>
+  <script src="js/routes.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/models.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/controllers/addendpoint.js"></script>
+  <script src="js/controllers/admin.js"></script>
+  <script src="js/controllers/home.js"></script>
+  <script src="js/controllers/submit.js"></script>
+  <script src="js/controllers/manageassets.js"></script>
+  <script src="js/controllers/transaction.js"></script>
+  <script src="js/controllers/signin.js"></script>
+
+  <link rel="stylesheet/less" href="bower_components/bootstrap/less/bootstrap.less" />
+  <link rel="stylesheet/less" href="less/theme.less" />
+  <script src="bower_components/less/dist/less.min.js"></script>
+  <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="bower_components/angular-tree-control/css/tree-control.css" />
+  <title>Tedchain Wallet</title>
+</head>
+<body>
+
+  <div class="body-content">
+    <!-- Static navbar -->
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#/"><i></i></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li ng-class="{'active': selectedTab == 'home'}"><a href="#/">Home</a></li>
+            <li ng-class="{'active': selectedTab == 'assets'}"><a href="#/manageassets">Assets</a></li>
+            <li ng-class="{'active': selectedTab == 'advanced'}"><a href="#/admin">Advanced</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#/addendpoint">Add server...</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="" ng-click="logOut()">Sign out</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+      <ng-view></ng-view>
+
+      <div class="footer-push"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <div class="container">
+        <div class="row links-root">
+          <div class="col-md-3">
+            <h4>Developers</h4>
+            <p><a href="https://github.com/tedchain">GitHub</a></p>
+            <p><a href="https://github.com/tedchain/tedchain-docs">Documentation</a></p>
+          </div>
+          <div class="col-md-3">
+            <h4>Support</h4>
+            <p><a href="https://github.com/tedchain/tedchain-docs">Getting started</a></p>
+            <p><a href="https://www.tedchain.network/contact-us">Contact us</a></p>
+            <p><a href="https://www.tedchain.network/">Tedchain</a></p>
+          </div>
+          <div class="col-md-3">
+            <h4>Community</h4>
+            <p><a href="https://forum.tedchain.network/">Forum</a></p>
+            <p><a href="http://blog.tedchain.network">Blog</a></p>
+          </div>
+          <div class="col-md-3">
+            <h4>Social</h4>
+            <p><a href="https://twitter.com/tedmorning">Twitter</a></p>
+            <p><a href="https://facebook.com/tedmorning.daybreak">Facebook</a></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 footer-copyright">
+            <p class="text-center">&copy; 2014-2018 TEDLab Sciences Ltd</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

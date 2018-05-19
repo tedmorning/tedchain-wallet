@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="col-md-3">
+    <div class="list-group top-spacing">
+      <a href="" ng-repeat="endpoint in endpoints" class="list-group-item" ng-click="setEndpoint(endpoint)" ng-class="{'active': endpoint.rootUrl == selectedRootUrl}">
+        {{ endpoint.properties.name }} <span ng-hide="endpoint.properties.name">({{ endpoint.rootUrl }})</span>
+      </a>
+    </div>
+    
+  </div>
+  <div class="col-md-9">
+    <div ng-repeat="transaction in transactions" ng-show="transaction.endpoint.rootUrl == selectedRootUrl">
+      <div ng-show="transaction.success">
+        <h4>General</h4>
+        <table class="table table-condensed record-property-table">
+          <tr>
+            <th class="col-md-3">Instance</th>
+            <td class="col-md-9">{{ transaction.endpoint.properties.name }} <span ng-hide="transaction.endpoint.properties.name">({{ transaction.endpoint.rootUrl }})</span></td>
+          </tr>
+          <tr>
+            <th>Transaction Hash</th>
+            <td>{{ transaction.transactionHash }}</td>
+          </tr>
+          <tr>
+            <th>Mutation Hash</th>
+            <td>{{ transaction.mutationHash }}</td>
+          </tr>
+          <tr>
+            <th>Date</th>
+            <td>{{ transaction.date }}</td>
+          </tr>
+          <tr>
+            <th>Namespace</th>
+            <td>{{ transaction.namespace }}</td>
+          </tr>
+          <tr ng-show="transaction.memo">
+            <th>Memo</th>
+            <td><code>{{ transaction.memo }}</code></td>
+          </tr>
+        </table>
+
+        <div ng-show="transaction.acc_records.length > 0">
+          <h4>Accounts</h4>
+          <table class="table table-striped wide-table">
+            <tr>
+              <th class="col-md-4">Path</th>
+              <th class="col-md-4">Asset</th>
+              <th class="col-md-2">Balance change</th>
+              <th class="col-md-2">New balance</th>
+            </tr>
+            <tr ng-repeat="record in transaction.acc_records">
+              <td><span title="{{ record.key.path.toString() }}">{{ record.key.path.toString() }}</span></td>
+              <td><span title="{{ record.key.name }}">{{ record.key.name }}</span></td>
+              <td>{{ record.valueDelta.toString() }}</td>
+              <td>{{ record.value.toString() }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div ng-show="transaction.data_records.length > 0">
+        <h4>Data records</h4>
+        <div class="data-record-block" ng-repeat="record in transaction.data_records">
+          <table class="table table-condensed record-property-table">
+            <tr>
+              <th class="col-md-3">Path</th>
+              <td class="col-md-9">{{ record.key.path.toString() }}</td>
+            </tr>
+            <tr>
+              <th>Record name</th>
+              <td>{{ record.key.name }}</td>
+            </tr>
+          </table>
+          <pre ng-show="record.value">{{ record.value }}</pre>
+          <p ng-hide="record.value" class="text-center">The value was not modified</p>
+        </div>
+      </div>
+
+      <div ng-hide="transaction.success">
+        <h3 class="text-center">This transaction does not exist on this Tedchain endpoint</h3>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,211 @@
+﻿<div class="row">
+  <div class="col-md-3">
+
+    <div class="dropdown fullsize-dropdown">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        <b class="caret"></b>
+        <span>{{ endpoint.properties.name }} <span ng-hide="endpoint.properties.name">({{ endpoint.rootUrl }})</span></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li ng-repeat="endpoint in endpoints"><a href="" ng-click="setEndpoint(endpoint)">{{ endpoint.properties.name }} <span ng-hide="endpoint.properties.name">({{ endpoint.rootUrl }})</span></a></li>
+      </ul>
+    </div>
+
+    <div class="list-group top-spacing">
+      <a href="" class="list-group-item" ng-click="setView('tree-view')" ng-class="{'active': display == 'tree-view'}">Tree View</a>
+      <a href="" class="list-group-item" ng-click="setView('advanced-transaction')" ng-class="{'active': display == 'advanced-transaction'}">Transaction</a>
+      <a href="" class="list-group-item" ng-click="setView('alias-editor')" ng-class="{'active': display == 'alias-editor'}">Edit Aliases</a>
+      <a href="" class="list-group-item" ng-click="setView('data-editor')" ng-class="{'active': display == 'data-editor'}">Edit Data Record</a>
+      <a href="" class="list-group-item" ng-click="setView('info-editor')" ng-class="{'active': display == 'info-editor'}">Edit Ledger Info</a>
+    </div>
+
+  </div>
+  <div class="col-md-9" ng-switch on="display">
+
+    <!-- Transaction Builder -->
+    <form method="post" ng-switch-when="advanced-transaction" ng-submit="submit()" autocomplete="off" ng-controller="TransactionController">
+      <table class="table">
+        <tr>
+          <th>Account</th>
+          <th>Asset</th>
+          <th>Amount</th>
+          <th></th>
+        </tr>
+        <tr ng-repeat="mutation in mutations">
+          <td ng-class="{'has-error': mutation.accountError}"><input type="text" class="form-control" ng-model="mutation.account" ng-change="mutation.accountError = false"></td>
+          <td ng-class="{'has-error': mutation.assetError}"><input type="text" class="form-control" ng-model="mutation.asset" ng-change="mutation.assetError = false"></td>
+          <td ng-class="{'has-error': mutation.amountError}"><input type="text" class="form-control" ng-model="mutation.amount" ng-change="mutation.amountError = false"></td>
+          <td><button type="button" class="form-control" ng-click="remove($index)">Delete</button></td>
+        </tr>
+      </table>
+      <div class="pull-right">
+        <button type="button" class="btn btn-default" ng-click="addMutation()">Add row</button>
+        <button type="button" class="btn btn-primary" ng-click="submit()">Submit</button>
+      </div>
+    </form>
+
+    <!-- Alias Editor -->
+    <form method="post" ng-switch-when="alias-editor" name="aliasEditor" ng-submit="submit()" autocomplete="off" ng-controller="AliasEditorController">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Edit Alias</h3>
+        </div>
+        <div class="panel-body">
+
+          <div class="form-group" ng-class="{'has-error': sendForm.alias.$invalid && sendForm.alias.$dirty}">
+            <label class="control-label" for="alias">Alias</label>
+            <div class="input-group">
+              <input type="text" class="form-control" name="alias" id="alias" placeholder="Alias" ng-model="fields.alias" required>
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="loadAlias()">Refresh</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" ng-class="{'has-error': sendForm.path.$invalid && sendForm.path.$dirty}">
+            <label class="control-label" for="assetImage">Path</label>
+            <input type="text" class="form-control" name="path" id="path" placeholder="Path" ng-model="fields.path" required>
+          </div>
+
+        </div>
+        <div class="panel-footer text-right">
+          <button type="submit" class="btn btn-primary" ng-disabled="aliasEditor.$invalid">Send</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Data Editor -->
+    <form method="post" ng-switch-when="data-editor" name="dataEditor" ng-submit="submit()" autocomplete="off" ng-controller="DataEditorController">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Edit Data Record</h3>
+        </div>
+        <div class="panel-body">
+
+          <div class="form-group" ng-class="{'has-error': sendForm.path.$invalid && sendForm.path.$dirty}">
+            <label class="control-label" for="path">Path</label>
+            <input type="text" class="form-control" name="path" id="path" placeholder="Path" ng-model="fields.path" required>
+          </div>
+
+          <div class="form-group" ng-class="{'has-error': sendForm.recordName.$invalid && sendForm.recordName.$dirty}">
+            <label class="control-label" for="recordName">Record Name</label>
+            <input type="text" class="form-control" name="recordName" id="recordName" placeholder="Record Name" ng-model="fields.recordName" required>
+          </div>
+
+          <div class="form-group" ng-class="{'has-error': sendForm.data.$invalid && sendForm.data.$dirty}">
+            <label class="control-label" for="data">Data</label>
+            <textarea class="form-control" name="data" id="data" placeholder="Data" ng-model="fields.data"></textarea>
+          </div>
+
+        </div>
+        <div class="panel-footer text-right">
+          <button type="button" class="btn btn-primary" ng-disabled="dataEditor.$invalid" ng-click="loadData()">Load</button>
+          <button type="submit" class="btn btn-primary" ng-disabled="dataEditor.$invalid">Send</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Ledger Info Editor -->
+    <form method="post" ng-switch-when="info-editor" name="infoEditor" ng-submit="submit()" autocomplete="off" ng-controller="InfoEditorController">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Edit Ledger Info</h3>
+        </div>
+        <div class="panel-body">
+
+          <div class="form-group" ng-class="{'has-error': sendForm.name.$invalid && sendForm.name.$dirty}">
+            <label class="control-label" for="name">Ledger Name</label>
+            <input type="text" class="form-control" name="name" id="name" placeholder="Ledger Name" ng-model="fields.name" required>
+          </div>
+
+          <div class="form-group" ng-class="{'has-error': sendForm.validatorUrl.$invalid && sendForm.validatorUrl.$dirty}">
+            <label class="control-label" for="validatorUrl">Validator Root URL</label>
+            <input type="text" class="form-control" name="validatorUrl" id="validatorUrl" placeholder="https://<url>/" ng-model="fields.validatorUrl" required>
+          </div>
+
+          <div class="form-group" ng-class="{'has-error': sendForm.tos.$invalid && sendForm.tos.$dirty}">
+            <label class="control-label" for="tos">Terms of Service</label>
+            <textarea class="form-control" name="tos" id="tos" placeholder="" ng-model="fields.tos"></textarea>
+          </div>
+
+          <div class="form-group" ng-class="{'has-error': sendForm.webpageUrl.$invalid && sendForm.webpageUrl.$dirty}">
+            <label class="control-label" for="webpageUrl">Webpage URL</label>
+            <input type="text" class="form-control" name="webpageUrl" id="webpageUrl" placeholder="Webpage URL" ng-model="fields.webpageUrl">
+          </div>
+
+        </div>
+        <div class="panel-footer text-right">
+          <button type="button" class="btn btn-primary" ng-disabled="dataEditor.$invalid" ng-click="loadData()">Load</button>
+          <button type="submit" class="btn btn-primary" ng-disabled="dataEditor.$invalid">Send</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Tree View -->
+    <div ng-switch-when="tree-view" ng-controller="TreeViewController">
+      <div class="row">
+
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Ledger Tree</h3>
+            </div>
+            <div class="panel-body tree-explorer">
+              <treecontrol class="tree-classic" tree-model="treeData" options="treeOptions" expanded-nodes="expandedNodes" on-selection="selectNode(node)">
+                {{node.Path}}
+              </treecontrol>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+
+          <!-- Data Record -->
+          <div ng-show="selectedNode.record.recordKey.recordType == 'DATA'">
+            <h4>Data record</h4>
+            <table class="table table-condensed record-property-table">
+              <tr>
+                <th class="col-sm-3">Path</th>
+                <td class="col-sm-9">{{ selectedNode.record.recordKey.path.toString() }}</td>
+              </tr>
+              <tr>
+                <th>Name</th>
+                <td>{{ selectedNode.record.recordKey.name}}</td>
+              </tr>
+            </table>
+            <pre>{{ selectedNode.data }}</pre>
+          </div>
+
+          <!-- Account Records -->
+          <div ng-show="selectedNode.record.recordKey.recordType == 'ACC'">
+            <h4>Account record</h4>
+
+            <table class="table table-condensed record-property-table">
+              <tr>
+                <th class="col-sm-3">Path</th>
+                <td class="col-sm-9">{{ selectedNode.record.recordKey.path.toString() }}</td>
+              </tr>
+              <tr>
+                <th>Asset</th>
+                <td>{{ selectedNode.asset }}</td>
+              </tr>
+              <tr>
+                <th>Amount</th>
+                <td>{{ selectedNode.amount }}</td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="tree-related-transactions" ng-show="selectedNode.record.recordKey.recordType">
+            <h4>Related transactions</h4>
+
+            <div ng-repeat="transaction in transactions">
+              <div><a href="#/transaction/{{ transaction }}">{{ transaction }}</a></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,16 @@
+﻿
+<span class="currency-icon thumbnail">
+  <img ng-show="asset.assetDefinition && asset.assetDefinition.iconUrl" ng-src="{{ asset.assetDefinition.iconUrl }}" />
+  <span ng-hide="asset.assetDefinition && asset.assetDefinition.iconUrl" class="bg-primary">
+    <i class="fa fa-2x fa-money"></i>
+  </span>
+</span>
+
+<div class="details-right">
+  <h4 class="list-group-item-heading" ng-show="asset.currentRecord">{{ asset.currentRecord.balance.toString() }} {{ asset.assetDefinition.nameShort }}</h4>
+</div>
+
+<div class="details-left">
+  <h4 class="list-group-item-heading">{{ asset.assetDefinition.name }}<span ng-hide="asset.assetDefinition.name">(Unnamed asset)</span></h4>
+  <p class="list-group-item-text text-muted"><i class="fa fa-edit"></i> Asset path: <span title="{{ asset.fullPath }}">{{ asset.fullPath }}</span></p>
+</div>
